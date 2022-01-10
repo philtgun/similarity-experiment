@@ -144,3 +144,5 @@ dmypy.json
 # Win
 ehthumbs.db
 Thumbs.db
+
+.streamlit
