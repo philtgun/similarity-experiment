@@ -1,6 +1,6 @@
 import json
 import random
-from uuid import uuid4
+from datetime import datetime
 
 import pandas as pd
 import streamlit as st
@@ -17,14 +17,14 @@ def jamendo_url(track_id: int) -> str:
     return f'https://mp3d.jamendo.com/?trackid={track_id}&format=mp32'
 
 
-def increment_progress(track_id: str, result: dict[str, str]) -> None:
-    st.session_state['results'][track_id] = {k: SIMILARITY[v] for k, v in result.items()}
+def increment_progress() -> None:
+    # st.session_state['results'][track_id] = {k: SIMILARITY[v] for k, v in result.items()}
     st.session_state['progress'] += 1
 
 
 def save_respose(df: pd.DataFrame) -> None:
     aws_path = st.secrets['AWS_PATH']
-    aws_path += f'{uuid4()}.csv'
+    aws_path += f'{datetime.now()}.csv'
     df.to_csv(aws_path, storage_options={'anon': False})
 
 
@@ -60,7 +60,8 @@ def main():
                         st.audio(jamendo_url(track_id))
                     results[key] = st.select_slider('Similar', options=SIMILARITY.keys(), key=key)
 
-            st.form_submit_button(on_click=increment_progress, args=[data['reference'], results])
+            if st.form_submit_button(on_click=increment_progress):
+                st.session_state['results'][track_id] = {k: SIMILARITY[v] for k, v in results.items()}
 
     else:
         df = pd.DataFrame(st.session_state['results'])
