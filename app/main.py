@@ -12,26 +12,42 @@ SIMILARITY = {
     'Very similar': 3
 }
 
+DESCRIPTION = """
+Welcome! This experiment should take around 10 minutes of your time.
+
+You will be presented with a reference track and 5 playlists of 4 tracks that are suggested based on the reference
+track. Please listen to the reference track and each playlist enough to understand the nature of each track.
+For each playlist,
+please rate its similarity to the reference track on the scale from "not similar" to "very similar" in the context of
+the playlist being recommended in the "if you liked this track, you might like these other tracks" context.
+"""
+
 
 def jamendo_url(track_id: int) -> str:
     return f'https://mp3d.jamendo.com/?trackid={track_id}&format=mp32'
 
 
-def increment_progress() -> None:
-    # st.session_state['results'][track_id] = {k: SIMILARITY[v] for k, v in result.items()}
-    st.session_state['progress'] += 1
-
-
 def save_respose(df: pd.DataFrame) -> None:
+    print(df)
     aws_path = st.secrets['AWS_PATH']
     aws_path += f'{datetime.now()}.csv'
     df.to_csv(aws_path, storage_options={'anon': False})
 
 
+def save_answer(keys: list[str], track_id: int, total: int) -> None:
+    st.session_state['progress'] += 1
+    st.session_state['results'][track_id] = {k: SIMILARITY[st.session_state[k]] for k in keys}
+
+    if st.session_state['progress'] == total:
+        df = pd.DataFrame(st.session_state['results'])
+        df.sort_index(inplace=True)
+        save_respose(df)
+
+
 def main():
     st.set_page_config(layout='wide')
     st.markdown('# Music similarity experiment')
-    st.markdown('Welcome! Here the experiment is described')
+    st.markdown(DESCRIPTION)
 
     with open('data.json') as fp:
         data_all = json.load(fp)
@@ -41,15 +57,17 @@ def main():
         st.session_state['results'] = {}
     progress = st.session_state['progress']
 
-    st.progress(progress / len(data_all))
-    if progress < len(data_all):
+    total = len(data_all)
+    st.progress(progress / total)
+    if progress < total:
         data = data_all[progress]
+        reference_track_id = data['reference']
 
         with st.form(key='form', clear_on_submit=True):
             st.markdown('### Reference track')
-            st.audio(jamendo_url(data['reference']))
+            st.audio(jamendo_url(reference_track_id))
 
-            results = {}
+            keys = data['options'].keys()
             columns = st.columns(len(data['options']))
             items = list(data['options'].items())
             random.shuffle(items)
@@ -58,16 +76,12 @@ def main():
                     st.markdown(f'### Playlist #{i+1}')
                     for track_id in track_ids:
                         st.audio(jamendo_url(track_id))
-                    results[key] = st.select_slider('Similar', options=SIMILARITY.keys(), key=key)
+                    st.select_slider('Similar', options=SIMILARITY.keys(), key=key)
 
-            if st.form_submit_button(on_click=increment_progress):
-                st.session_state['results'][track_id] = {k: SIMILARITY[v] for k, v in results.items()}
-
+            st.form_submit_button(on_click=save_answer, args=[keys, reference_track_id, total])
     else:
-        df = pd.DataFrame(st.session_state['results'])
-        df.sort_index(inplace=True)
-        save_respose(df)
-        st.markdown('Thanks for participating!')
+        st.balloons()
+        st.markdown('### Thanks for participating!')
 
 
 if __name__ == '__main__':
