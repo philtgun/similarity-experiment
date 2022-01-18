@@ -13,13 +13,14 @@ SIMILARITY = {
 }
 
 DESCRIPTION = """
-Welcome! This experiment should take around 10 minutes of your time.
+Welcome! This experiment should take around 15 minutes of your time. Please don't reload the page until you are
+finished, or you will lose your progress.
 
 You will be presented with a reference track and 5 playlists of 4 tracks that are suggested based on the reference
 track. Please listen to the reference track and each playlist enough to understand the nature of each track.
 For each playlist,
-please rate its similarity to the reference track on the scale from "not similar" to "very similar" in the context of
-the playlist being recommended in the "if you liked this track, you might like these other tracks" context.
+please rate its similarity to the reference track on the scale from "not similar" to "very similar" as if
+the playlist is being recommended to you in the "if you liked this track, you might like these other tracks" context.
 """
 
 
@@ -76,7 +77,7 @@ def main():
                     st.markdown(f'### Playlist #{i+1}')
                     for track_id in track_ids:
                         st.audio(jamendo_url(track_id))
-                    st.select_slider('Similar', options=SIMILARITY.keys(), key=key)
+                    st.select_slider('How similar?', options=SIMILARITY.keys(), key=key)
 
             st.form_submit_button(on_click=save_answer, args=[keys, reference_track_id, total])
     else:
