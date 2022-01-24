@@ -13,14 +13,30 @@ SIMILARITY = {
 }
 
 DESCRIPTION = """
-Welcome! This experiment should take around 15 minutes of your time. Please don't reload the page until you are
-finished, or you will lose your progress.
+👋 Welcome! This experiment should take around 20 minutes of your time. Please use the device with a big screen if you
+can, it would be easier to do the experiment.
 
-You will be presented with a reference track and 5 playlists of 4 tracks that are suggested based on the reference
-track. Please listen to the reference track and each playlist enough to understand the nature of each track.
-For each playlist,
-please rate its similarity to the reference track on the scale from _not similar_ to _very similar_ as if
-the playlist is being recommended to you in the _"if you liked this track, you might like these other tracks"_ context.
+📢 Please read the following instructions carefully
+and **don't reload the page** until you are finished, or you will lose your progress.
+
+📃 You will be presented with a reference track and 5 playlists of 4 tracks that are suggested based on the reference
+track. **You don't need to listen to each track for the full duration**, please listen to the reference track and
+each
+track from the playlist **just enough** to understand the nature of each track. It can be around 20-30 seconds, or less
+or more, as long as you feel comfortable to give some opinion. Feel free to use
+the seek functionality to jump between the different parts of the track.
+
+🎯 There are 4 reference tracks in total, your overall progress is indicated by the progress bar under these
+instructions.
+
+⏳ Please **don't think too much** about the answers or spend too much time on each track, put the
+rating that pops into your mind after quick jumps over every track.
+
+⭐ For each playlist,
+please rate its similarity **to the reference track** on the scale from _"not similar"_ to _"very similar"_ as if
+the playlist is being recommended to you in the following context:
+
+### If you liked this track, you might like these other tracks
 """
 
 END_MESSAGE = """
@@ -32,7 +48,7 @@ Please answer a few background questions that should only take 3 minutes of your
 
 
 def jamendo_url(track_id: int) -> str:
-    return f'https://mp3d.jamendo.com/?trackid={track_id}&format=mp32'
+    return f'https://mp3d.jamendo.com/?trackid={track_id}&format=mp32#t=30,45'
 
 
 def save_respose(df: pd.DataFrame) -> None:
