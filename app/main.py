@@ -19,8 +19,15 @@ finished, or you will lose your progress.
 You will be presented with a reference track and 5 playlists of 4 tracks that are suggested based on the reference
 track. Please listen to the reference track and each playlist enough to understand the nature of each track.
 For each playlist,
-please rate its similarity to the reference track on the scale from "not similar" to "very similar" as if
-the playlist is being recommended to you in the "if you liked this track, you might like these other tracks" context.
+please rate its similarity to the reference track on the scale from _not similar_ to _very similar_ as if
+the playlist is being recommended to you in the _"if you liked this track, you might like these other tracks"_ context.
+"""
+
+END_MESSAGE = """
+### Thanks for participating!
+
+Please answer a few background questions that should only take 3 minutes of your time:
+[https://forms.gle/JM5meAHhiafsBwvx5](https://forms.gle/JM5meAHhiafsBwvx5)
 """
 
 
@@ -82,7 +89,7 @@ def main():
             st.form_submit_button(on_click=save_answer, args=[keys, reference_track_id, total])
     else:
         st.balloons()
-        st.markdown('### Thanks for participating!')
+        st.markdown(END_MESSAGE)
 
 
 if __name__ == '__main__':
