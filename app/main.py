@@ -14,7 +14,7 @@ SIMILARITY = {
 }
 
 DESCRIPTION = """
-⚠ Please use Chrome or Firefox browser for this experiment, as Safari have been reported to have some issues.
+⚠ Please use Firefox or Chrome browser for this experiment, as Safari have been reported to have some issues.
 
 👋 Welcome! This experiment should take around 20 minutes of your time. Please use the device with a big screen if you
 can, it would be easier to do the experiment.
@@ -28,6 +28,9 @@ track. **You don't need to listen to each track for the full duration**, by defa
 to get a better understanding if you feel that 15 seconds is not enough. However,
 please listen to the reference track and each track from the playlist **just enough** to understand the nature of
 each track.
+
+⚠ If the audio widgets are too short for the controls to be comfortable used, please zoom out the webpage with the
+help of your browser.
 
 🎯 There are 4 reference tracks in total, your overall progress is indicated by the progress bar under these
 instructions.
