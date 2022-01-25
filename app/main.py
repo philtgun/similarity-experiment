@@ -14,6 +14,8 @@ SIMILARITY = {
 }
 
 DESCRIPTION = """
+⚠ Please use Chrome or Firefox browser for this experiment, as Safari have been reported to have some issues.
+
 👋 Welcome! This experiment should take around 20 minutes of your time. Please use the device with a big screen if you
 can, it would be easier to do the experiment.
 
