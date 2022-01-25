@@ -1,6 +1,7 @@
 import json
 import random
 from datetime import datetime
+from typing import Optional
 
 import pandas as pd
 import streamlit as st
@@ -20,21 +21,22 @@ can, it would be easier to do the experiment.
 and **don't reload the page** until you are finished, or you will lose your progress.
 
 📃 You will be presented with a reference track and 5 playlists of 4 tracks that are suggested based on the reference
-track. **You don't need to listen to each track for the full duration**, please listen to the reference track and
-each
-track from the playlist **just enough** to understand the nature of each track. It can be around 20-30 seconds, or less
-or more, as long as you feel comfortable to give some opinion. Feel free to use
-the seek functionality to jump between the different parts of the track.
+track. **You don't need to listen to each track for the full duration**, by default you would be presented with
+15-second segment from each track. You can continue listening or skip around by using the controls of the audio player
+to get a better understanding if you feel that 15 seconds is not enough. However,
+please listen to the reference track and each track from the playlist **just enough** to understand the nature of
+each track.
 
 🎯 There are 4 reference tracks in total, your overall progress is indicated by the progress bar under these
 instructions.
 
-⏳ Please **don't think too much** about the answers or spend too much time on each track, put the
-rating that pops into your mind after quick jumps over every track.
+⏳ Please **don't think too much** about the answers or spend too much time on each track, answer intuitively by
+adjusting the rating to that which feels right after familiarizing yourself with every track from a playlist.
+Don't forget that there are no wrong answers.
 
 ⭐ For each playlist,
-please rate its similarity **to the reference track** on the scale from _"not similar"_ to _"very similar"_ as if
-the playlist is being recommended to you in the following context:
+please rate its similarity **to the reference track** on the 4-point scale from _"not similar"_ to _"very similar"_
+as if the playlist is presented to you in the following context:
 
 ### If you liked this track, you might like these other tracks
 """
@@ -60,7 +62,12 @@ def save_respose(df: pd.DataFrame) -> None:
 
 def save_answer(keys: list[str], track_id: int, total: int) -> None:
     st.session_state['progress'] += 1
-    st.session_state['results'][track_id] = {k: SIMILARITY[st.session_state[k]] for k in keys}
+    results: dict[str, Optional[int]]
+    if st.session_state['skip']:
+        results = {k: None for k in keys}
+    else:
+        results = {k: SIMILARITY[st.session_state[k]] for k in keys}
+    st.session_state['results'][track_id] = results
 
     if st.session_state['progress'] == total:
         df = pd.DataFrame(st.session_state['results'])
@@ -102,6 +109,9 @@ def main():
                         st.audio(jamendo_url(track_id))
                     st.select_slider('How similar?', options=SIMILARITY.keys(), key=key)
 
+            st.checkbox('I am not very familiar with this genre (skip)', key='skip',
+                        help='Only tick this checkbox if you have ***zero*** idea on how to rate the playlists, '
+                             'and you will skip this track')
             st.form_submit_button(on_click=save_answer, args=[keys, reference_track_id, total])
     else:
         st.balloons()
