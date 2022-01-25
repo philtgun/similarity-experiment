@@ -29,7 +29,7 @@ to get a better understanding if you feel that 15 seconds is not enough. However
 please listen to the reference track and each track from the playlist **just enough** to understand the nature of
 each track.
 
-⚠ If the audio widgets are too short for the controls to be comfortable used, please zoom out the webpage with the
+⚠ If the audio widgets are too short for the controls to be comfortably used, please zoom out the webpage with the
 help of your browser.
 
 🎯 There are 4 reference tracks in total, your overall progress is indicated by the progress bar under these
