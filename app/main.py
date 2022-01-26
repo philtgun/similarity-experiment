@@ -53,6 +53,8 @@ Please answer a few background questions that should only take 3 minutes of your
 [https://forms.gle/JM5meAHhiafsBwvx5](https://forms.gle/JM5meAHhiafsBwvx5)
 """
 
+LETTERS = ['A', 'B', 'C', 'D']
+
 
 def jamendo_url(track_id: int) -> str:
     return f'https://mp3d.jamendo.com/?trackid={track_id}&format=mp32#t=30,45'
@@ -100,7 +102,7 @@ def main():
         reference_track_id = data['reference']
 
         with st.form(key='form', clear_on_submit=True):
-            st.markdown('### Reference track')
+            st.markdown(f'### Reference track {LETTERS[progress]}')
             st.audio(jamendo_url(reference_track_id))
 
             keys = data['options'].keys()
