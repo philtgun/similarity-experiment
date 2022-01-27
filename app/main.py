@@ -43,7 +43,7 @@ Don't forget that there are no wrong answers.
 please rate its similarity **to the reference track** on the 4-point scale from _"not similar"_ to _"very similar"_
 as if the playlist is presented to you in the following context:
 
-### If you liked this track, you might like these other tracks
+### If you liked how this track sounds, you might like these other tracks
 """
 
 END_MESSAGE = """
