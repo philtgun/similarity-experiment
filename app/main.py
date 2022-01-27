@@ -17,7 +17,7 @@ DESCRIPTION = """
 ⚠ Please use Firefox or Chrome browser for this experiment, as Safari have been reported to have some issues.
 
 👋 Welcome! This experiment should take around 20 minutes of your time. Please use the device with a big screen if you
-can, it would be easier to do the experiment.
+can, it would be easier to do the experiment. This survey contains a completion code for SurveySwap.io
 
 📢 Please read the following instructions carefully
 and **don't reload the page** until you are finished, or you will lose your progress.
