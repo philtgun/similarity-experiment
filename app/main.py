@@ -14,10 +14,14 @@ SIMILARITY = {
 }
 
 DESCRIPTION = """
-⚠ Please use Firefox or Chrome browser for this experiment, as Safari have been reported to have some issues.
+⚠️ Please use Firefox or Chrome browser for this experiment, as Safari have been reported to have some issues.
 
 👋 Welcome! This experiment should take around 20 minutes of your time. Please use the device with a big screen if you
 can, it would be easier to do the experiment.
+
+ℹ️ This experiment is completely anonymous, and all the data collected will be used for the research purposes. You can
+stop participating in this experiment at any moment and there will be no data submitted as long as you don't see the
+final message.
 
 📢 Please read the following instructions carefully
 and **don't reload the page** until you are finished, or you will lose your progress.
@@ -29,7 +33,7 @@ to get a better understanding if you feel that 15 seconds is not enough. However
 please listen to the reference track and each track from the playlist **just enough** to understand the nature of
 each track.
 
-⚠ If the audio widgets are too short for the controls to be comfortably used, please zoom out the webpage with the
+⚠️ If the audio widgets are too short for the controls to be comfortably used, please zoom out the webpage with the
 help of your browser.
 
 🎯 There are 4 reference tracks in total, your overall progress is indicated by the progress bar under these
@@ -86,43 +90,43 @@ def main():
     st.set_page_config(layout='wide')
     st.markdown('# Music similarity experiment')
     st.markdown(DESCRIPTION)
+    if st.checkbox('I have read the instructions and agree to participate in this experiment'):
+        with open('data.json') as fp:
+            data_all = json.load(fp)
 
-    with open('data.json') as fp:
-        data_all = json.load(fp)
+        if 'progress' not in st.session_state:
+            st.session_state['progress'] = 0
+            st.session_state['results'] = {}
+        progress = st.session_state['progress']
 
-    if 'progress' not in st.session_state:
-        st.session_state['progress'] = 0
-        st.session_state['results'] = {}
-    progress = st.session_state['progress']
+        total = len(data_all)
+        st.progress(progress / total)
+        if progress < total:
+            data = data_all[progress]
+            reference_track_id = data['reference']
 
-    total = len(data_all)
-    st.progress(progress / total)
-    if progress < total:
-        data = data_all[progress]
-        reference_track_id = data['reference']
+            with st.form(key='form', clear_on_submit=True):
+                st.markdown(f'### Reference track {LETTERS[progress]}')
+                st.audio(jamendo_url(reference_track_id))
 
-        with st.form(key='form', clear_on_submit=True):
-            st.markdown(f'### Reference track {LETTERS[progress]}')
-            st.audio(jamendo_url(reference_track_id))
+                keys = data['options'].keys()
+                columns = st.columns(len(data['options']))
+                items = list(data['options'].items())
+                random.shuffle(items)
+                for i, (column, (key, track_ids)) in enumerate(zip(columns, items)):
+                    with column:
+                        st.markdown(f'### Playlist #{i+1}')
+                        for track_id in track_ids:
+                            st.audio(jamendo_url(track_id))
+                        st.select_slider('How similar?', options=SIMILARITY.keys(), key=key)
 
-            keys = data['options'].keys()
-            columns = st.columns(len(data['options']))
-            items = list(data['options'].items())
-            random.shuffle(items)
-            for i, (column, (key, track_ids)) in enumerate(zip(columns, items)):
-                with column:
-                    st.markdown(f'### Playlist #{i+1}')
-                    for track_id in track_ids:
-                        st.audio(jamendo_url(track_id))
-                    st.select_slider('How similar?', options=SIMILARITY.keys(), key=key)
-
-            st.checkbox('I am not very familiar with this genre (skip)', key='skip',
-                        help='Only tick this checkbox if you have ***zero*** idea on how to rate the playlists, '
-                             'and you will skip this track')
-            st.form_submit_button(on_click=save_answer, args=[keys, reference_track_id, total])
-    else:
-        st.balloons()
-        st.markdown(END_MESSAGE)
+                st.checkbox('I am not very familiar with this genre (skip)', key='skip',
+                            help='Only tick this checkbox if you have ***zero*** idea on how to rate the playlists, '
+                                 'and you will skip this track')
+                st.form_submit_button(on_click=save_answer, args=[keys, reference_track_id, total])
+        else:
+            st.balloons()
+            st.markdown(END_MESSAGE)
 
 
 if __name__ == '__main__':
