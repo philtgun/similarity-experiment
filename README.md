@@ -1,7 +1,7 @@
 # Similarity Experiment
 
 ## Running
-Create and activate virtualenv
+Use python 3.9+ and set up the virtual environment.
 ```shell
 pip install -r requirements.txt
 streamlit run app/main.py
