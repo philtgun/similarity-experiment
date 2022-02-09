@@ -61,3 +61,13 @@ To sync:
 ```shell
 aws s3 sync s3://my-bucket local-path
 ```
+
+## Development
+```shell
+pip install pre-commit
+pre-commit install
+```
+
+## License
+
+Apache License Version 2.0
