@@ -62,12 +62,25 @@ To sync:
 aws s3 sync s3://my-bucket local-path
 ```
 
+## License
+
+Apache License Version 2.0
+
+## Citing
+
+```bibtex
+@inproceedings{tovstogan_similarity_2009,
+	title = {Similarity of nearest-neighbor query results in deep latent spaces},
+	author = {Tovstogan, Philip and Serra, Xavier and Bogdanov, Dmitry},
+	booktitle = {Proceedings of the 19th Sound and Music Computing Conference ({SMC})},
+	year = {2022}
+}
+```
+
 ## Development
 ```shell
 pip install pre-commit
 pre-commit install
 ```
 
-## License
 
-Apache License Version 2.0
